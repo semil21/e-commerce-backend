@@ -115,12 +115,6 @@ const updateCategoryStatus = expressAsyncHandler(
       } else {
         res.status(400).send({ response: "Failed to update category status" });
       }
-
-      if (updatedStatus) {
-        res
-          .status(200)
-          .send({ response: "Server Error, Failed To Delete Category" });
-      }
     } catch (error) {
       res
         .status(500)
