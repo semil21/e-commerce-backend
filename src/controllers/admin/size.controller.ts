@@ -54,4 +54,78 @@ const getProductSizes = expressAsyncHandler(
   },
 );
 
-export default { addNewSize, getAllSizes, getProductSizes };
+const updtateSizeStatus = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const { productId } = req.params;
+      const { status } = req.body;
+
+      const newStatus = status === true ? false : true;
+
+      const updateStatus = await Size.findByIdAndUpdate(
+        { _id: productId },
+        { status: newStatus },
+        { new: true },
+      );
+
+      if (updateStatus) {
+        res.status(200).send({ response: updateStatus.status });
+      } else {
+        res.status(400).send({ response: "Failed to Update Size Status" });
+      }
+    } catch (error) {
+      res
+        .status(500)
+        .send({ response: "Server Error, Failed To Update Size Status" });
+    }
+  },
+);
+
+const editSize = expressAsyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const data = req.body;
+
+    const updateRecord = await Size.findByIdAndUpdate(
+      { _id: productId },
+      data,
+      { new: true },
+    );
+
+    if (updateRecord) {
+      res.status(200).send({ response: updateRecord });
+    } else {
+      res.status(400).send("Failed To Edit Size");
+    }
+  } catch (error) {
+    res.status(500).send({ response: "Server Error, Failed to Edit Size" });
+  }
+});
+
+const deleteSize = expressAsyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+
+    const deleteRecord = await Size.findByIdAndDelete(
+      { _id: productId },
+      { new: true },
+    );
+
+    if (deleteRecord) {
+      res.status(200).send({ response: "Size Deleted Successfully" });
+    } else {
+      res.status(200).send({ response: "Failed to Delete Size" });
+    }
+  } catch (error) {
+    res.status(500).send({ response: "Server Error, Failed To Delete Size" });
+  }
+});
+
+export default {
+  addNewSize,
+  getAllSizes,
+  getProductSizes,
+  updtateSizeStatus,
+  deleteSize,
+  editSize,
+};

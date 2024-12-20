@@ -84,9 +84,11 @@ const deleteCategory = expressAsyncHandler(
       const deleteCategoryRecord = await Category.findByIdAndDelete(id);
 
       if (deleteCategoryRecord) {
-        res.status(200).send({ response: "Category Deleted Successfully" });
+        res.status(200).send({
+          response: "Category Deleted Successfully",
+        });
       } else {
-        res.status(500).send({ response: " Failed To Delete Category" });
+        res.status(500).send({ response: "Failed To Delete Category" });
       }
     } catch (error) {
       res

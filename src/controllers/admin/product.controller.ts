@@ -75,9 +75,7 @@ const updateProductStatus = expressAsyncHandler(
       );
 
       if (updateRecord) {
-        res
-          .status(200)
-          .send({ response: "Product Status Updated Successfully" });
+        res.status(200).send({ response: updateRecord.status });
       } else {
         res.status(200).send({ response: "Failed To Update Product Status" });
       }
@@ -94,8 +92,6 @@ const deleteProduct = expressAsyncHandler(
     try {
       const { productId } = req.params;
 
-      console.log("productId -", productId);
-
       const [deleteProductImage, deleteProductSize, deleteProduct] =
         await Promise.all([
           Image.findOneAndDelete({ product: productId }),
@@ -104,11 +100,9 @@ const deleteProduct = expressAsyncHandler(
         ]);
 
       if (deleteProductImage && deleteProductSize && deleteProduct) {
-        res
-          .status(200)
-          .send({
-            response: "Product Deleted Successfully With Its Images and Sizes.",
-          });
+        res.status(200).send({
+          response: "Product Deleted Successfully With Its Images and Sizes.",
+        });
       } else {
         res.status(400).send({ response: "Failed To Delete Product" });
       }
